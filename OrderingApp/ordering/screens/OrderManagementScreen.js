@@ -29,6 +29,7 @@ const OrderManagementScreen = ({ navigation }) => {
     fetchUserId();
   }, [navigation]);
 
+  
   // Fetch all orders when screen is focused
   useFocusEffect(
     useCallback(() => {
@@ -46,13 +47,19 @@ const OrderManagementScreen = ({ navigation }) => {
     }, [])
   );
 
+  
+
   // Handle status change
   const handleStatusChange = async (orderId, newStatus) => {
     try {
+
+      // Retrieve token from AsyncStorage
+      const token = await AsyncStorage.getItem('token');
       const response = await fetch(`${API_BASE_URL}/orders/${orderId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`, // Include token in the Authorization header
         },
         body: JSON.stringify({ status: newStatus }),
       });
@@ -81,10 +88,13 @@ const OrderManagementScreen = ({ navigation }) => {
     if (!selectedOrder) return;
 
     try {
+      // Retrieve token from AsyncStorage
+      const token = await AsyncStorage.getItem('token');
       const response = await fetch(`${API_BASE_URL}/orders/${selectedOrder._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`, // Include token in the Authorization header
         },
         body: JSON.stringify(selectedOrder),
       });

@@ -1,8 +1,9 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, {  useState, useCallback } from 'react';
 import { View, Text, FlatList, StyleSheet, Image, TouchableOpacity, Alert } from 'react-native';
 import { API_BASE_URL } from '../api/api';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { FAB } from 'react-native-paper'; // Import the FAB component
+import AsyncStorage from '@react-native-async-storage/async-storage'; 
 
 const ProductManagementScreen = () => {
   const [products, setProducts] = useState([]);
@@ -29,8 +30,13 @@ const ProductManagementScreen = () => {
   // Handle product deletion
   const handleDeleteProduct = async (productId) => {
     try {
+      // Retrieve token from AsyncStorage
+      const token = await AsyncStorage.getItem('token');
       const response = await fetch(`${API_BASE_URL}/products/${productId}`, {
         method: 'DELETE',
+        headers:{
+          Authorization: `Bearer ${token}`, // Include token in the Authorization header
+        }
       });
       if (response.ok) {
         Alert.alert('Success', 'Product deleted successfully');

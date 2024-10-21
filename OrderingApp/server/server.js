@@ -1,83 +1,3 @@
-// import express from 'express';
-// import mongoose from 'mongoose';
-// import dotenv from 'dotenv';
-// import bodyParser from 'body-parser';
-// import cors from 'cors';
-// import http from 'http';
-// import { Server } from 'socket.io';
-
-// // Load environment variables
-// dotenv.config();
-
-// // Import routes
-// import customerRoutes from './routes/customerRoutes.js';
-// import productRoutes from './routes/productRoutes.js';
-// import orderRoutes from './routes/orderRoutes.js';
-// import authRoutes from './routes/authRoutes.js';
-// import userRoutes from './routes/userRoutes.js';
-
-// // Initialize app
-// const app = express();
-
-// // Middleware
-// app.use(cors({
-//   origin: ['*'], // or other allowed origins
-//   methods: ['GET', 'POST', 'PUT', 'DELETE'],
-//   allowedHeaders: ['Content-Type', 'Authorization']
-// }));
-
-// app.use(bodyParser.json());
-
-// const server = http.createServer(app);
-// const io = new Server(server, { cors: { origin: "*" } });
-
-// // Serve static files from uploads directory
-// app.use('/uploads', express.static('uploads'));
-
-// // Routes
-// app.use('/api/customers', customerRoutes);
-// app.use('/api/products', productRoutes);
-// app.use('/api/orders', orderRoutes);
-// app.use('/api/auth', authRoutes);
-// // User routes
-// app.use('/api/users', userRoutes);
-
-
-// // Database connection
-// mongoose.connect(process.env.MONGO_URI, {
-//   useNewUrlParser: true,
-//   useUnifiedTopology: true
-// }).then(() => console.log('MongoDB connected'))
-//   .catch(err => console.log(err));
-
-// // Start server
-// const PORT = process.env.PORT || 5000;
-
-// // Socket.io connection for location updates
-// io.on('connection', (socket) => {
-//   console.log('A user connected:', socket.id);
-
-//   // Listen for location updates from clients
-//   socket.on('locationUpdate', async ({ userId, lat, lng }) => {
-//     try {
-//       // Update user's location in the database
-//       await User.findByIdAndUpdate(userId, { location: { lat, lng } });
-//       console.log(`Location updated for user ${userId}: ${lat}, ${lng}`);
-
-//       // Emit updated location to all admins
-//       io.emit('locationUpdate', { userId, lat, lng });
-//     } catch (error) {
-//       console.error('Error updating location:', error);
-//     }
-//   });
-
-//   socket.on('disconnect', () => {
-//     console.log('A user disconnected:', socket.id);
-//   });
-// });
-
-// app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-
 import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
@@ -86,6 +6,8 @@ import cors from 'cors';
 import http from 'http';
 import { Server } from 'socket.io';
 import User from './models/User.js'; // Ensure you import the User model
+import { protect, checkSalesRole, checkAdminRole, checkUserRole } from './middlewares/authMiddleware.js';
+
 
 // Load environment variables
 dotenv.config();

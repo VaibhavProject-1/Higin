@@ -1,180 +1,3 @@
-// import React, { useEffect, useState, useCallback } from 'react';
-// import { View, FlatList, StyleSheet, Modal, Alert, Text } from 'react-native';
-// import { API_BASE_URL } from '../api/api';
-// import { useFocusEffect } from '@react-navigation/native';
-// import TopAppBar from '../components/TopAppBar';
-// import FloatingActionButton from '../components/FloatingActionButton';
-// import UserCard from '../components/UserCard';
-// import UserForm from '../components/UserForm';
-
-// const UserManagementScreen = () => {
-//   const [users, setUsers] = useState([]);
-//   const [modalVisible, setModalVisible] = useState(false);
-//   const [isEditing, setIsEditing] = useState(false);
-//   const [currentUser, setCurrentUser] = useState(null);
-
-//   // Form fields
-//   const [name, setName] = useState('');
-//   const [email, setEmail] = useState('');
-//   const [password, setPassword] = useState('');
-//   const [role, setRole] = useState('sales'); // Default value
-
-//   // Fetch all users
-//   const fetchUsers = async () => {
-//     try {
-//       const response = await fetch(`${API_BASE_URL}/users/list`);
-//       const data = await response.json();
-//       setUsers(data);
-//     } catch (error) {
-//       console.error('Error fetching users:', error);
-//     }
-//   };
-
-//   // Fetch users whenever the screen comes into focus
-//   useFocusEffect(
-//     useCallback(() => {
-//       fetchUsers();
-//     }, [])
-//   );
-
-//   // Open the modal for creating or editing a user
-//   const openModal = (user = null) => {
-//     setIsEditing(!!user);
-//     if (user) {
-//       setCurrentUser(user);
-//       setName(user.name);
-//       setEmail(user.email);
-//       setRole(user.role);
-//       setPassword(''); // Blank password for security reasons
-//     } else {
-//       setName('');
-//       setEmail('');
-//       setPassword('');
-//       setRole('sales');
-//     }
-//     setModalVisible(true);
-//   };
-
-//   // Handle creating or editing a user
-//   const handleSaveUser = async () => {
-//     if (!name || !email || !password || !role) {
-//       Alert.alert('Error', 'Please fill in all fields.');
-//       return;
-//     }
-
-//     const userData = { name, email, password, role };
-//     try {
-//       let response;
-//       if (isEditing) {
-//         response = await fetch(`${API_BASE_URL}/users/edit/${currentUser._id}`, {
-//           method: 'PUT',
-//           headers: { 'Content-Type': 'application/json' },
-//           body: JSON.stringify(userData),
-//         });
-//       } else {
-//         response = await fetch(`${API_BASE_URL}/users/create`, {
-//           method: 'POST',
-//           headers: { 'Content-Type': 'application/json' },
-//           body: JSON.stringify(userData),
-//         });
-//       }
-
-//       if (response.ok) {
-//         Alert.alert('Success', isEditing ? 'User updated successfully' : 'User created successfully');
-//         fetchUsers(); // Refresh users list
-//         setModalVisible(false); // Close modal
-//       } else {
-//         Alert.alert('Error', 'Failed to save user.');
-//       }
-//     } catch (error) {
-//       Alert.alert('Error', 'Something went wrong.');
-//     }
-//   };
-
-//   // Handle deleting a user
-//   const handleDeleteUser = async (userId) => {
-//     try {
-//       const response = await fetch(`${API_BASE_URL}/users/delete/${userId}`, { method: 'DELETE' });
-//       if (response.ok) {
-//         Alert.alert('Success', 'User deleted successfully');
-//         fetchUsers(); // Refresh users list
-//       } else {
-//         Alert.alert('Error', 'Failed to delete user.');
-//       }
-//     } catch (error) {
-//       Alert.alert('Error', 'Something went wrong.');
-//     }
-//   };
-
-//   // Render the user list item
-//   const renderUserItem = ({ item }) => (
-//     <UserCard
-//       user={item}
-//       onEdit={() => openModal(item)}
-//       onDelete={() => handleDeleteUser(item._id)}
-//     />
-//   );
-
-//   return (
-//     <View style={styles.container}>
-//       {/* <TopAppBar title="User Management" /> */}
-
-//       {/* List of users */}
-//       <FlatList
-//         data={users}
-//         keyExtractor={(item) => item._id}
-//         renderItem={renderUserItem}
-//         contentContainerStyle={styles.userList}
-//       />
-
-//       {/* Floating action button to add user */}
-//       <FloatingActionButton onPress={() => openModal()} />
-
-//       {/* Modal for creating/editing users */}
-//       <Modal
-//         visible={modalVisible}
-//         transparent={true}  // Ensure the background is transparent
-//         animationType="fade"
-//       >
-//         <View style={styles.modalBackground}>
-//           <UserForm
-//             name={name}
-//             email={email}
-//             password={password}
-//             role={role}
-//             setName={setName}
-//             setEmail={setEmail}
-//             setPassword={setPassword}
-//             setRole={setRole}
-//             onSave={handleSaveUser}
-//             onCancel={() => setModalVisible(false)}
-//             isEditing={isEditing}
-//           />
-//         </View>
-//       </Modal>
-//     </View>
-//   );
-// };
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: '#f9f9f9',
-//   },
-//   userList: {
-//     padding: 20,
-//     paddingBottom: 80, // Space for the FAB
-//   },
-//   modalBackground: {
-//     flex: 1,
-//     justifyContent: 'center',  // Center vertically
-//     alignItems: 'center',       // Center horizontally
-//     backgroundColor: 'rgba(0, 0, 0, 0.5)',  // Semi-transparent background
-//   },
-// });
-
-// export default UserManagementScreen;
-
 import React, { useEffect, useState, useCallback } from 'react';
 import { View, FlatList, StyleSheet, Modal, Alert, Button } from 'react-native';
 import { API_BASE_URL, API_BASED_URL } from '../api/api';
@@ -185,6 +8,7 @@ import UserForm from '../components/UserForm';
 import LiveLocationMap from '../components/LiveLocationMap';
 import UserDetailsModal from '../components/UserDetailsModal';
 import { io } from 'socket.io-client';
+import AsyncStorage from '@react-native-async-storage/async-storage'; 
 
 const UserManagementScreen = () => {
   const [users, setUsers] = useState([]);
@@ -201,7 +25,7 @@ const UserManagementScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [originalPasswordHash, setOriginalPasswordHash] = useState('');
-  const [role, setRole] = useState('sales');
+  const [role, setRole] = useState('user');
   const [target, setTarget] = useState('');  // Sales target
   const [month, setMonth] = useState('October');  // Default month (can be dynamically set)
   const [year, setYear] = useState(new Date().getFullYear().toString());  // Default year
@@ -264,7 +88,7 @@ const UserManagementScreen = () => {
       setName('');
       setEmail('');
       setPassword('');
-      setRole('sales');
+      setRole('user');
       setTarget('');
     }
     setModalVisible(true);
@@ -285,18 +109,24 @@ const UserManagementScreen = () => {
     }
     console.log('Sending user data to backend:', userData);  // Log the data being sent
   
+    // Retrieve token from AsyncStorage
+    const token = await AsyncStorage.getItem('token');
     try {
       let response;
       if (isEditing) {
         response = await fetch(`${API_BASE_URL}/users/edit/${currentUser._id}`, {
           method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`, // Include token in the Authorization header
+           },
           body: JSON.stringify(userData),
         });
       } else {
         response = await fetch(`${API_BASE_URL}/users/create`, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`, // Include token in the Authorization header
+           },
           body: JSON.stringify(userData),
         });
       }

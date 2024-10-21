@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, Button, Alert, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import * as ImagePicker from 'expo-image-picker'; // Import ImagePicker
 import { API_BASE_URL } from '../api/api';
+import AsyncStorage from '@react-native-async-storage/async-storage'; 
 
 const EditProductScreen = ({ route, navigation }) => {
   const { product } = route.params;
@@ -46,10 +47,17 @@ const EditProductScreen = ({ route, navigation }) => {
         type: `image/${fileType}`,
       });
     }
+
+    // Retrieve token from AsyncStorage
+    const token = await AsyncStorage.getItem('token');
+
   
     try {
       const response = await fetch(`${API_BASE_URL}/products/${product._id}`, {
         method: 'PUT',
+        headers: { 
+          Authorization: `Bearer ${token}`, // Include token in the Authorization header
+         },
         body: formData,  // Just send FormData, no need to set headers
       });
   

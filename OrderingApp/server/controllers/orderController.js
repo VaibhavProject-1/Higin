@@ -229,3 +229,14 @@ export const deleteOrder = async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 };
+
+// In your orders controller
+export const getOrdersBySalesOfficer = async (req, res) => {
+  try {
+    const salesOfficerId = req.params.salesOfficerId; // Get sales officer ID from request parameters
+    const orders = await Order.find({ salesOfficer: salesOfficerId }).populate('customer products.product');
+    res.json(orders);
+  } catch (error) {
+    res.status(500).json({ error: 'Error fetching orders' });
+  }
+};

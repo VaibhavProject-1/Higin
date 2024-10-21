@@ -1,5 +1,6 @@
 import User from '../models/User.js';
 import { generateToken } from '../utils/tokenUtils.js';
+import jwt from 'jsonwebtoken';
 
 // Signup User
 export const signupUser = async (req, res) => {
@@ -53,3 +54,4 @@ export const loginUser = async (req, res) => {
     res.status(500).json({ message: 'Error in user login', error });
   }
 };
+

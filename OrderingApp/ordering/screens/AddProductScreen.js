@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, TextInput, Button, Alert, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import * as ImagePicker from 'expo-image-picker'; // Use expo-image-picker
 import { API_BASE_URL } from '../api/api';
+import AsyncStorage from '@react-native-async-storage/async-storage'; 
 
 const AddProductScreen = () => {
   const [name, setName] = useState('');
@@ -32,6 +33,9 @@ const AddProductScreen = () => {
       return;
     }
 
+    // Retrieve token from AsyncStorage
+    const token = await AsyncStorage.getItem('token');
+
     // Prepare FormData
     const formData = new FormData();
     formData.append('name', name);
@@ -51,6 +55,7 @@ const AddProductScreen = () => {
         body: formData,
         headers: {
           'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${token}`, // Include token in the Authorization header
         },
       });
 

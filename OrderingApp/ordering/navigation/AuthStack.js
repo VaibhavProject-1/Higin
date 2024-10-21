@@ -12,6 +12,7 @@ import EditProductScreen from '../screens/EditProductScreen';
 import CustomerManagementScreen from '../screens/CustomerManagementScreen';
 import UserManagementScreen from '../screens/UserManagementScreen';
 import OrderManagementScreen from '../screens/OrderManagementScreen';
+import OrderListForSalesOfficerScreen from '../screens/OrderListForSalesOfficerScreen';
 
 
 const Stack = createStackNavigator();
@@ -19,18 +20,19 @@ const Stack = createStackNavigator();
 const AuthStack = () => {
   return (
     <Stack.Navigator initialRouteName="Login">
-      <Stack.Screen name="Login" component={LoginScreen} />
-      <Stack.Screen name="SignUp" component={SignUpScreen} />
-      <Stack.Screen name="Home" component={HomeScreen} />
-      <Stack.Screen name="CustomerList" component={CustomerListScreen} />
-      <Stack.Screen name="CustomerManagementScreen" component={CustomerManagementScreen} />
-      <Stack.Screen name="ProductSelection" component={ProductSelectionScreen} />
-      <Stack.Screen name="OrderReview" component={OrderReviewScreen} />
-      <Stack.Screen name="OrderManagementScreen" component={OrderManagementScreen} />
-      <Stack.Screen name="ProductManagementScreen" component={ProductManagementScreen} />
-      <Stack.Screen name="EditProductScreen" component={EditProductScreen} />
-      <Stack.Screen name="AddProductScreen" component={AddProductScreen} />
-      <Stack.Screen name="UserManagementScreen" component={UserManagementScreen} />
+      <Stack.Screen name="Login" component={LoginScreen} options={{ title: 'Login' }}/>
+      <Stack.Screen name="SignUp" component={SignUpScreen} options={{ title: 'Sign Up' }}/>
+      <Stack.Screen name="Home" component={HomeScreen} options={{ title: 'Home' }}/>
+      <Stack.Screen name="CustomerList" component={CustomerListScreen} options={{ title: 'Customers' }}/>
+      <Stack.Screen name="CustomerManagementScreen" component={CustomerManagementScreen} options={{ title: 'Manage Customers' }}/>
+      <Stack.Screen name="ProductSelection" component={ProductSelectionScreen} options={{ title: 'All Products' }}/>
+      <Stack.Screen name="OrderReview" component={OrderReviewScreen} options={{ title: 'Order Review' }}/>
+      <Stack.Screen name="OrderManagementScreen" component={OrderManagementScreen} options={{ title: 'Manage Orders' }}/>
+      <Stack.Screen name="OrderListForSalesOfficerScreen" component={OrderListForSalesOfficerScreen} options={{ title: 'My Orders' }}/>
+      <Stack.Screen name="ProductManagementScreen" component={ProductManagementScreen} options={{ title: 'Manage Prodcuts' }}/>
+      <Stack.Screen name="EditProductScreen" component={EditProductScreen} options={{ title: 'Edit Products' }}/>
+      <Stack.Screen name="AddProductScreen" component={AddProductScreen} options={{ title: 'Add Product' }}/>
+      <Stack.Screen name="UserManagementScreen" component={UserManagementScreen} options={{ title: 'Manage Users' }}/>
     </Stack.Navigator>
   );
 };

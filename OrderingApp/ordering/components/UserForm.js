@@ -43,6 +43,7 @@ const UserForm = ({
         onValueChange={(itemValue) => setRole(itemValue)}
         style={styles.picker}
       >
+        <Picker.Item label="User" value="user" />
         <Picker.Item label="Sales" value="sales" />
         <Picker.Item label="Admin" value="admin" />
       </Picker>

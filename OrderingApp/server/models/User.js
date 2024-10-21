@@ -17,8 +17,8 @@ const userSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    enum: ['sales', 'admin'],
-    default: 'sales',
+    enum: ['sales', 'admin','user'],
+    default: 'user',
   },
   // Remove single target/currentSales fields, replace with a history of monthly targets and sales
   salesProgress: [{

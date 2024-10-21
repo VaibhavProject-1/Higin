@@ -8,6 +8,7 @@ import {
   updateSalesOfficerLocation,
   getSalesOfficerLocations,
 } from '../controllers/userController.js';
+import { protect, checkAdminRole } from '../middlewares/authMiddleware.js';
 
 const router = express.Router();
 
@@ -15,7 +16,7 @@ const router = express.Router();
 router.post('/create', createUser);
 
 // Route to update a user
-router.put('/edit/:id', updateUser);
+router.put('/edit/:id', updateUser, protect, checkAdminRole);
 
 // Route to get all users (optional)
 router.get('/list', getAllUsers);
@@ -24,7 +25,7 @@ router.get('/list', getAllUsers);
 router.get('/:id', getUserById);
 
 // Route to delete a user (optional)
-router.delete('/delete/:id', deleteUser);
+router.delete('/delete/:id', deleteUser, protect, checkAdminRole);
 
 // Sales officer location tracking
 router.put('/location/:id', updateSalesOfficerLocation);
